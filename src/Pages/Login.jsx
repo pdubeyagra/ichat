@@ -15,8 +15,7 @@ const Login = () => {
       await signInWithEmailAndPassword(auth, email, password);
       navigate("/"); // Redirect to the home page or another appropriate page after successful login
     } catch (error) {
-      setErr(true);
-      console.error("Error signing in:", error);
+      setErr(error.message);
     }
   };
 
@@ -29,7 +28,7 @@ const Login = () => {
           <input type="email" placeholder="Email Address" name="email" />
           <input type="password" placeholder="Password" name="password" />
           <button type="submit">Log In</button>
-          { err && <span>something went wrong</span> }
+          { err && <span>{err}</span> }
         </form>
         <Link to="/register">
           <p>You do not have an account? Register</p>

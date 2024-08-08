@@ -1,3 +1,9 @@
+@mixin mobile{
+  @media screen and (max-width: 480px) {
+    @content
+  }
+}
+
 .registerContainer {
   background-color: rgb(233, 224, 224);
   height: 100vh;
@@ -66,6 +72,7 @@
   align-items: center;
   justify-content: center;
 
+
   .container {
     border: 1px solid black;
     border-radius: 1rem;
@@ -81,6 +88,9 @@
   border-right: 1px solid rgb(38, 31, 25);
   background-color: rgb(81, 56, 56);
   overflow: hidden;
+  @include mobile(){
+    // width: 100%;
+  }
   .Navbar {
     display: flex;
     align-items: center;
@@ -185,6 +195,9 @@
 }
 
 .Chat {
+  @include mobile(){
+    // display: none;
+  }
   flex: 2;
   .ChatInfo {
     display: flex;

@@ -18,32 +18,26 @@ const Register = () => {
     const avatar = e.target[3].files[0];
 
     try {
-      // Create user with email and password
+
       const res = await createUserWithEmailAndPassword(auth, email, password);
 
-      // Upload avatar to storage
       const avatarRef = ref(storage, `avatars/${res.user.uid}/${avatar.name}`);
       const uploadTask = uploadBytesResumable(avatarRef, avatar);
 
       uploadTask.on(
         "state_changed",
         (snapshot) => {
-          // Handle progress or other state changes if needed
         },
         (error) => {
-          // Handle upload error
-          setErr(true);
+          setErr(error.message);
         },
         () => {
-          // Handle successful upload
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-            // Update user profile with fullname and photoURL
             await updateProfile(res.user, {
               displayName: displayName,
               photoURL: downloadURL,
             });
 
-            // Create user document in Firestore
             await setDoc(doc(db, "users", res.user.uid), {
               uid: res.user.uid,
               displayName,
@@ -51,16 +45,15 @@ const Register = () => {
               photoURL: downloadURL,
             });
 
-            // Create user chat document in Firestore
+
             await setDoc(doc(db, "userChat", res.user.uid), { userInfo: [] });
 
-            // Redirect user to home page
+
             navigate("/");
           });
         }
       );
     } catch (error) {
-      // Handle authentication error
       console.error("Registration error:", error);
       setErr(true);
     }
@@ -86,7 +79,7 @@ const Register = () => {
             <span>Add an avatar</span>
           </label>
           <button type="submit">Sign Up</button>
-          {err && <span>Something went wrong, please try again</span>}
+          {err && <span>{err}</span>}
         </form>
         <Link to="/login">
           <p>You already have an account? Login</p>
